@@ -1,0 +1,81 @@
+<html>
+
+<head>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+</head>
+
+<body>
+
+  <div id="app"
+       class="ui container">
+    <h1>GitHub Profiles</h1>
+    <github-user-card v-for="username in usernames" :username="username"></github-user-card>
+  </div>
+
+  <!-- Import Vue.js and axios -->
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/moment"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script type="text/x-template" id="github-user-card-template">
+    <!-- Template for GitHub card -->
+    <div class="ui card">
+      <div class="image">
+        <img src="https://semantic-ui.com/images/avatar2/large/kristy.png">
+      </div>
+      <div class="content">
+        <a class="header">{{user.name}}</a>
+        <div class="meta">
+          <span class="date">Joined in {{user.created_at | formatDate}}</span>
+        </div>
+        <div class="description">
+          {{user.bio}}
+        </div>
+      </div>
+      <div class="extra content">
+        <a>
+          <i class="user icon"></i>
+          {{user.followers}} Friends
+        </a>
+      </div>
+    </div>
+  </script>
+
+  <!-- Your JavaScript Code :) -->
+  <script>
+    const GithubUserCard = Vue.extend({
+      template: '#github-user-card-template',
+      props: {
+        username: String
+      },
+      data() {
+        return {
+          user: {}
+        }
+      },
+      mounted() {
+        axios.get(`https://api.github.com/users/${this.username}`)
+             .then(result => this.user = result.data)
+      }
+    })
+
+    Vue.filter('formatDate', function(value) {
+      if (value) {
+        return moment(String(value)).format('MM/DD/YYYY hh:mm')
+      }
+    })
+
+    new Vue({
+      el: '#app',
+      components: {
+        GithubUserCard
+      },
+      data: {
+        usernames: ['vicsstar', 'hootlex', 'vigbokwe']
+      }
+    })
+  </script>
+</body>
+
+</html>
