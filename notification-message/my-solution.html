@@ -1,0 +1,70 @@
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+</head>
+
+<body>
+
+  <div id="app" class="ui container">
+    <h1>Notification Center</h1>
+    <notification-message type="success" header="Success notification">
+      <p>This is a <strong>success</strong> notification</p>
+    </notification-message>
+
+    <notification-message type="info" header="Info notification">
+      <p>This is a <strong>info</strong> notification</p>
+    </notification-message>
+
+    <notification-message type="warning" header="Warning notification">
+      <p>This is a <strong>warning</strong> notification</p>
+    </notification-message>
+
+    <notification-message type="error" header="Error notification">
+      <p>This is a <strong>error</strong> notification</p>
+    </notification-message>
+
+    <notification-message header="Default notification">
+      <p>This is the <strong>default</strong> notification</p>
+    </notification-message>
+  </div>
+
+  <!-- Template for Notification Message -->
+  <script type="text/x-template" id="notification-message-template">
+    <!-- Notification Message Markup -->
+    <!-- Types: info, warning, error, success -->
+    <div class="ui message" :class="{[type]: true}">
+      <i class="close icon"></i>
+      <div class="header">
+        {{header}}
+      </div>
+      <slot></slot>
+    </div>
+  </script>
+
+  <!-- Import Vue.js -->
+  <script src="https://unpkg.com/vue"></script>
+
+  <!-- Your JavaScript Code :) -->
+  <script>
+    const NotificationMessage = Vue.extend({
+      template: '#notification-message-template',
+      props: {
+        type: {
+          type: String,
+          default: 'info'
+        },
+        header: String
+      }
+    })
+
+    new Vue({
+      el: '#app',
+      components: {
+        NotificationMessage
+      }
+    })
+  </script>
+</body>
+
+</html> 
