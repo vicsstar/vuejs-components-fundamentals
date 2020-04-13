@@ -27,14 +27,18 @@
     <notification-message header="Default notification">
       <p>This is the <strong>default</strong> notification</p>
     </notification-message>
+
+    <notification-message>
+      <p>A notification with <strong>no header</strong></p>
+    </notification-message>
   </div>
 
   <!-- Template for Notification Message -->
   <script type="text/x-template" id="notification-message-template">
     <!-- Notification Message Markup -->
     <!-- Types: info, warning, error, success -->
-    <div class="ui message" :class="{[type]: true}">
-      <i class="close icon"></i>
+    <div class="ui message" :class="type" v-if="!hidden">
+      <i class="close icon" @click="hide"></i>
       <div class="header">
         {{header}}
       </div>
@@ -55,6 +59,16 @@
           default: 'info'
         },
         header: String
+      },
+      data() {
+        return {
+          hidden: false
+        }
+      },
+      methods: {
+        hide: function() {
+          this.hidden = true
+        }
       }
     })
 
